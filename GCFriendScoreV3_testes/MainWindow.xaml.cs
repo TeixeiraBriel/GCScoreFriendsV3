@@ -21,14 +21,17 @@ namespace GCFriendScoreV3_testes
     public partial class MainWindow : Window
     {
         Scraper scraper;
+        Login login;
         public MainWindow()
         { 
             InitializeComponent();
             scraper = new Scraper();
+            login = new Login();
             DataContext = scraper;
 
             //feito em um bodao
-            scraper.ScrapeData("https://gamersclub.com.br/jogador/1536302");
+            string[] Ids = new string[] { "1536302", "1536315" };
+            scraper.ScrapeData(login.Logar(), Ids);
         }
         
     }

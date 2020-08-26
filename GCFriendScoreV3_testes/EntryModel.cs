@@ -8,7 +8,7 @@ namespace GCFriendScoreV3_testes
 {
     public class EntryModel
     {
-        public string Titulo { get; set; }
-        public string Descricao { get; set; }
+        public string TituloEntry { get; set; }
+        public string DescricaoEntry { get; set; }
     }
 }

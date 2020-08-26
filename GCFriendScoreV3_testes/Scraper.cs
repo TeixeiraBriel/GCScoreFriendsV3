@@ -1,10 +1,14 @@
 ﻿using HtmlAgilityPack;
+using OpenQA.Selenium;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
+using System.Web;
 
 namespace GCFriendScoreV3_testes
 {
@@ -18,16 +22,36 @@ namespace GCFriendScoreV3_testes
             set { _entries = value; }
         }
 
-        public void ScrapeData(string url)
+        public void ScrapeData(IWebDriver driver, string[] Ids)
         {
-            var web = new HtmlWeb();
-            var doc = web.Load(url);
+            int n = 0;
+            var doc = new HtmlDocument();
+            foreach (var Id in Ids)
+            {
+                driver.Navigate().GoToUrl("https://gamersclub.com.br/jogador/" + Id);
+                Thread.Sleep(10000);
 
-            //ta parando na tela de login
-            var dados = doc.DocumentNode.SelectNodes("//*[@class='btn-create-account']");
-            
-            
+                doc.LoadHtml(driver.PageSource);
+                var dados = doc.DocumentNode.SelectNodes("//*[@class='StatsBoxPlayerInfo']");
 
+                while (dados == null && n < 15)
+                {
+                    doc.LoadHtml(driver.PageSource);
+                    dados = doc.DocumentNode.SelectNodes("//*[@class='StatsBoxPlayerInfo']");
+                    n++;
+                    Thread.Sleep(500);
+                }
+
+                foreach (var dado in dados)
+                {
+                    var TituloSite = HttpUtility.HtmlDecode(dado.SelectSingleNode(".//div[@class='StatsBoxPlayerInfoItem__name']").InnerText);
+                    var DescricaoSite = HttpUtility.HtmlDecode(dado.SelectSingleNode(".//div[@class='StatsBoxPlayerInfoItem__value']").InnerText);
+
+                    _entries.Add(new EntryModel { TituloEntry = TituloSite, DescricaoEntry = DescricaoSite });
+                }
+            }
+
+            driver.Quit();
         }
     }
 }
