@@ -20,9 +20,16 @@ namespace GCFriendScoreV3_testes
     /// </summary>
     public partial class MainWindow : Window
     {
+        Scraper scraper;
         public MainWindow()
         { 
             InitializeComponent();
+            scraper = new Scraper();
+            DataContext = scraper;
+
+            //feito em um bodao
+            scraper.ScrapeData("https://gamersclub.com.br/jogador/1536302");
         }
+        
     }
 }
