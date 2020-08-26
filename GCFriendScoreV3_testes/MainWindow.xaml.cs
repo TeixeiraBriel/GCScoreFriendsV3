@@ -21,7 +21,7 @@ namespace GCFriendScoreV3_testes
     public partial class MainWindow : Window
     {
         public MainWindow()
-        {
+        { 
             InitializeComponent();
         }
     }
