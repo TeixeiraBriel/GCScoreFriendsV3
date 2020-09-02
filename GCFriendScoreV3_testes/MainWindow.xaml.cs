@@ -32,6 +32,7 @@ namespace GCFriendScoreV3_testes
             //feito em um bodao
             string[] Ids = new string[] { "1536302", "1536315" };
             scraper.ScrapeData(login.Logar(), Ids);
+            scraper.Export();
         }
         
     }

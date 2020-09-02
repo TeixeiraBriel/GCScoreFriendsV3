@@ -1,9 +1,12 @@
-﻿using HtmlAgilityPack;
+﻿using CsvHelper;
+using HtmlAgilityPack;
 using OpenQA.Selenium;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -52,6 +55,20 @@ namespace GCFriendScoreV3_testes
             }
 
             driver.Quit();
+        }
+
+        public void Export()
+        {
+            using (TextWriter tw = File.CreateText("SampleData.csv"))
+            
+                using (var cw = new CsvWriter(tw, CultureInfo.InvariantCulture))
+                {
+                    foreach (var entrie in Entries)
+                    {
+                        cw.WriteRecord(entrie);
+                        cw.NextRecord();
+                    }
+                }
         }
     }
 }
